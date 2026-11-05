@@ -1,0 +1,21 @@
+[project]
+name = "self-healing-airflow"
+version = "0.1.0"
+description = "Rules, LLMs and a hybrid of both for self-healing Airflow 3 pipelines"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+pythonpath = ["dags"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+extend-exclude = [".idea"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "S"]
+ignore = ["S110"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "S106"]

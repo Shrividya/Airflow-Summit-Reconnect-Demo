@@ -1,0 +1,18 @@
+[
+  {"id": "rate_limit_429", "exception": "healing.errors.RateLimited", "message": "429 Too Many Requests after 800 rows: partner API quota exceeded, slow down", "label": "retry", "note": "this repo's scenario"},
+  {"id": "warehouse_suspended", "exception": "healing.errors.WarehouseSuspended", "message": "Warehouse WH_LOAD is suspended: resume it or wait for auto-resume", "label": "retry", "note": "this repo's scenario; auto-resumes"},
+  {"id": "warehouse_503", "exception": "builtins.ConnectionError", "message": "warehouse returned 503 Service Unavailable", "label": "retry", "note": "this repo's outage; transient unless the outage lasts"},
+  {"id": "read_timeout", "exception": "builtins.TimeoutError", "message": "HTTPSConnectionPool(host='api.partner.example', port=443): Read timed out. (read timeout=10)", "label": "retry"},
+  {"id": "connection_dropped", "exception": "psycopg2.OperationalError", "message": "server closed the connection unexpectedly\n\tThis probably means the server terminated abnormally before or while processing the request.", "label": "retry"},
+  {"id": "deadlock", "exception": "psycopg2.errors.DeadlockDetected", "message": "deadlock detected\nDETAIL: Process 4021 waits for ShareLock on transaction 9912; blocked by process 4019.", "label": "retry"},
+  {"id": "s3_slowdown", "exception": "botocore.exceptions.ClientError", "message": "An error occurred (SlowDown) when calling the PutObject operation (reached max retries: 4): Please reduce your request rate.", "label": "retry"},
+  {"id": "truncated_json", "exception": "json.decoder.JSONDecodeError", "message": "Expecting value: line 1 column 16385 (char 16384)", "label": "retry", "note": "power-of-two offset suggests a truncated read; decode errors are the classic trap for a stop"},
+  {"id": "revoked_key", "exception": "healing.errors.Unauthorized", "message": "401 Unauthorized: API key for fx-rates was revoked", "label": "stop", "note": "this repo's scenario"},
+  {"id": "schema_drift", "exception": "healing.errors.SchemaDrift", "message": "Schema drift in settlements.csv: expected column 'amount', found 'amount_cents'", "label": "stop", "note": "this repo's scenario"},
+  {"id": "missing_import", "exception": "builtins.ModuleNotFoundError", "message": "No module named 'pandas_ta'", "label": "stop"},
+  {"id": "sql_syntax", "exception": "psycopg2.errors.SyntaxError", "message": "syntax error at or near \"FORM\"\nLINE 1: SELECT id, amount FORM payments WHERE day = '2026-10-31'", "label": "stop"},
+  {"id": "access_denied", "exception": "botocore.exceptions.ClientError", "message": "An error occurred (AccessDenied) when calling the GetObject operation: Access Denied", "label": "stop"},
+  {"id": "missing_column", "exception": "builtins.KeyError", "message": "'amount'", "label": "stop", "note": "a data bug that fails every time"},
+  {"id": "bad_literal", "exception": "builtins.ValueError", "message": "invalid literal for int() with base 10: 'N/A'", "label": "stop"},
+  {"id": "s3_key_missing", "exception": "builtins.FileNotFoundError", "message": "s3://partner-drop/settlements/2026-10-31.csv: key does not exist", "label": "disputed", "note": "permanent, or just not delivered yet?"}
+]
